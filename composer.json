@@ -1,0 +1,17 @@
+{
+    "name": "kramapet/notentity",
+    "description": "NotEntity - Another Shitty Entity Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petr Kramar",
+            "email": "kramar@masquerade.cz"
+        }
+    ],
+    "require": {
+		"vrana/notorm": "dev-master"
+	},
+	"require-dev": {
+		"phpunit/dbunit": "1.3.1"
+	}
+}
