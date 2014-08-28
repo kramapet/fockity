@@ -1,17 +1,10 @@
 drop table if exists `entity`;
-create table `entity` (
-	`id` int unsigned not null auto_increment,
-	`name` char(50) not null,
-	primary key (`id`)
-)engine=innodb;
-
-drop table if exists `property`;
 create table `property` (
 	`id` int unsigned not null auto_increment,
-	`entity_id` int unsigned not null,
-	`name` char(25) not null,
-	foreign key (`entity_id`) references `entity` (`id`),
-	unique (`id`, `entity_id`),
+	`entity` char(50) not null,
+	`property` char(50) not null,
+	unique (`entity`, `property`),
+	key (`entity`),
 	primary key (`id`)
 )engine=innodb;
 
@@ -30,4 +23,13 @@ create table `record` (
 	`value_id` int unsigned not null,
 	foreign key (`value_id`) references `value` (`id`),
 	primary key (`id`, `value_id`)
+)engine=innodb;
+
+drop table if exists `reference`;
+create table `reference` (
+	`source_id` int unsigned not null,
+	`target_id` int unsigned not null,
+	foreign key (`source_id`) references `record` (`id`),
+	foreign key (`target_id`) references `record` (`id`),
+	primary key (`source_id`, `target_id`)
 )engine=innodb;
