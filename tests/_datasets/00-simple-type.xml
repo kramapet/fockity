@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<dataset>
+	<property id="1" entity="post" property="name" type="str" />
+	<property id="2" entity="post" property="teaser" type="str" />
+	<property id="3" entity="post" property="content" type="str" />
+
+	<value id="1" property_id="1" data="Hello world" />
+	<value id="2" property_id="2" data="Hello world teaser" />
+	<value id="3" property_id="3" data="Hello world full content" />
+
+	<value id="4" property_id="1" data="Hloupy nemec" />
+	<value id="5" property_id="2" data="Teaaser o hloupem nemci" />
+	<value id="6" property_id="3" data="Cely clanek o hloupem nemci" />
+
+	<record id="1" value_id="1" />
+	<record id="1" value_id="2" />
+	<record id="1" value_id="3" />
+
+	<record id="2" value_id="4" />
+	<record id="2" value_id="5" />
+	<record id="2" value_id="6" />
+</dataset>
