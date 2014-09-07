@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <dataset>
-	<property id="1" entity="post" property="name" type="str" />
-	<property id="2" entity="post" property="teaser" type="str" />
-	<property id="3" entity="post" property="content" type="str" />
+	<entity id="1" name="post" />
+	<entity id="2" name="page" />
 
-	<value id="1" property_id="1" data="Hello world" />
-	<value id="2" property_id="2" data="Hello world teaser" />
-	<value id="3" property_id="3" data="Hello world full content" />
+	<property id="1" entity_id="2" name="name" type="str" />
+	<property id="2" entity_id="2" name="content" type="str" />
 
-	<value id="4" property_id="1" data="Hloupy nemec" />
-	<value id="5" property_id="2" data="Teaaser o hloupem nemci" />
-	<value id="6" property_id="3" data="Cely clanek o hloupem nemci" />
+	<property id="3" entity_id="1" name="name" type="str" />
+	<property id="4" entity_id="1" name="teaser" type="str" />
+	<property id="5" entity_id="1" name="content" type="str" />
 
-	<record id="1" value_id="1" />
-	<record id="1" value_id="2" />
-	<record id="1" value_id="3" />
+	<record id="1" entity_id="1" />
+	<value id="1" record_id="1" property_id="3" value="Insurance" />
+	<value id="2" record_id="1" property_id="4" value="Insurance is the thing" />
+	<value id="3" record_id="1" property_id="5" value="Insurance can be really useful thing when something went wrong" />
 
-	<record id="2" value_id="4" />
-	<record id="2" value_id="5" />
-	<record id="2" value_id="6" />
+	<record id="2" entity_id="1" />
+	<value id="4" record_id="2" property_id="3" value="People" />
+	<value id="5" record_id="2" property_id="4" value="Human being is wise but people are dumb" />
+	<value id="6" record_id="2" property_id="5" value="Just incomplete essay about people and its stupidity" />
 </dataset>
