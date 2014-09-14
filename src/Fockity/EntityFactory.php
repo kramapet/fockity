@@ -24,6 +24,8 @@ class EntityFactory implements IEntityFactory {
 			throw new InvalidEntityException("Entity must implements Fockity\IEntity interface");
 		}
 
+		$entity->setEntityName($name);
+
 		return $entity;
 	}
 
@@ -38,5 +40,4 @@ class EntityFactory implements IEntityFactory {
 
 		return $this->entities[$name];
 	}
-
 }

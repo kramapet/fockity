@@ -35,9 +35,30 @@ class EntityFactoryTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testToCreateNotIEntityInstance() {
 		$this->factory->register('post', '\stdClass');
+
 		$this->factory->create('post');
 	}
 
 }
 
-class PostEntity implements Fockity\IEntity {}
+class PostEntity implements Fockity\IEntity {
+
+	public function setId($id) {
+	}
+
+	public function setEntityName($name) {
+	}
+
+	public function setProperty($property, $value) {
+	}
+
+	public function getId() {
+	}
+
+	public function getEntityName() {
+	}
+
+	public function getProperty($property) {
+	}
+
+}

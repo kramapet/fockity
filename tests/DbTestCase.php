@@ -40,6 +40,8 @@ abstract class DbTestCase extends PHPUnit_Extensions_Database_TestCase {
 		$options['username'] = $GLOBALS['DB_USER'];
 		$options['password'] = $GLOBALS['DB_PASS'];
 		$options['database'] = $GLOBALS['DB_DATABASE'];
+		$options['profiler']['run'] = TRUE;
+		$options['profiler']['file'] = __DIR__ . '/../sqllog.txt';
 		
 		return new \DibiConnection($options);
 	}

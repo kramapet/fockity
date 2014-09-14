@@ -16,4 +16,11 @@ interface IEntityFactory {
 	 * @return IEntity
 	 */
 	function create($name);
+
+	/**
+	 * Is entity registered?
+	 * @param string $name entity name
+	 * @return bool
+	 */
+	function isRegistered($name);
 }
