@@ -22,4 +22,8 @@ class PropertyMapper extends AbstractMapper {
 		return $this->deleteRow($this->table, $property_id);
 	}
 
+	public function deleteByEntity($entity_id) {
+		return $this->deleteRowByField($this->table, 'entity_id', $entity_id);
+	}
+
 }

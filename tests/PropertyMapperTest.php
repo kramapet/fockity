@@ -34,4 +34,10 @@ class PropertyMapperTest extends DbTestCase {
 
 		$this->assertEquals(1, $this->mapper->delete($property_id));
 	}
+
+	public function testToDeletePropertyByEntityId() {
+		$entity_id = 1;
+
+		$this->assertEquals(3, $this->mapper->deleteByEntity($entity_id));
+	}
 }
