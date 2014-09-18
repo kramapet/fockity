@@ -5,6 +5,8 @@ namespace Fockity;
 
 class EntityMapper extends AbstractMapper {
 
+	public $table = 'entity';
+
 	/**
 	 * Get all entities
 	 *
@@ -31,11 +33,9 @@ class EntityMapper extends AbstractMapper {
 	 * @return int entity id
 	 */
 	public function create($entity) {
-		$this->dibi->query('INSERT INTO [entity]', array(
-			'name' => $entity
-		));	
-
-		return $this->dibi->getInsertId();
+		$data['name'] = $entity;
+		
+		return $this->insertRow($this->table, $data);
 	}
 
 	/**
@@ -46,7 +46,6 @@ class EntityMapper extends AbstractMapper {
 	 */
 	public function delete($entity_name) {
 		$this->dibi->query('DELETE FROM [entity] WHERE [name] = %s', $entity_name);
-
 		return $this->dibi->getAffectedRows();
 	}
 

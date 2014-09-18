@@ -4,6 +4,8 @@ namespace Fockity;
 
 class ValueMapper extends AbstractMapper {
 
+	public $table = 'value';
+
 	public function getByRecord($id) {
 		if (is_numeric($id)) {
 			$id = (array) $id;
@@ -13,23 +15,20 @@ class ValueMapper extends AbstractMapper {
 	}
 
 	public function create($record_id, $property_id, $value) {
-		$this->dibi->query('INSERT INTO [value]', array(
-			'record_id' => $record_id,
-			'property_id' => $property_id,
-			'value' => $value
-		));
+		$data['record_id'] = $record_id;
+		$data['property_id'] = $property_id;
+		$data['value'] = $value;
 
-		return $this->dibi->getInsertId();
+		return $this->insertRow($this->table, $data);
 	}
 
 	public function delete($id) {
-		$this->dibi->query('DELETE FROM [value] WHERE [id] = %i', $id);
-		return $this->dibi->getAffectedRows();
+		return $this->deleteRow($this->table, $id);
 	}
 
 	public function update($value_id, $new_value) {
 		$data['value'] = $new_value;
-		$this->dibi->query('UPDATE [value] SET ', $data, ' WHERE [id] = %i', $value_id);
-		return $this->dibi->getAffectedRows();
+
+		return $this->updateRow($this->table, $value_id, $data);
 	}
 }
