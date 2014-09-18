@@ -31,7 +31,19 @@ abstract class AbstractMapper {
 	 * @return int affected rows
 	 */
 	protected function deleteRow($table, $id) {
-		$this->dibi->query("DELETE FROM [{$table}] WHERE [id] = %i", $id);
+		return $this->deleteRowByField($table, 'id', $id);
+	}
+
+	/**
+	 * Delete row from table by field
+	 *
+	 * @param string $table
+	 * @param string $field
+	 * @param mixed $value
+	 * @return int affected rows
+	 */
+	protected function deleteRowByField($table, $field, $value) {
+		$this->dibi->query("DELETE FROM [{$table}] WHERE [{$field}] = %s", $value);
 
 		return $this->dibi->getAffectedRows();
 	}
