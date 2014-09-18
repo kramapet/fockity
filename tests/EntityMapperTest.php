@@ -28,9 +28,9 @@ class EntityMapperTest extends DbTestCase {
 	}
 
 	public function testToDeleteEntity() {
-		$entity_name = 'post';
+		$entity_id = 1;
 
-		$this->assertEquals(1, $this->mapper->delete($entity_name));
+		$this->assertEquals(1, $this->mapper->delete($entity_id));
 	}
 
 	public function testToGetAll() {

@@ -44,9 +44,8 @@ class EntityMapper extends AbstractMapper {
 	 * @param string $name
 	 * @return int affected rows
 	 */
-	public function delete($entity_name) {
-		$this->dibi->query('DELETE FROM [entity] WHERE [name] = %s', $entity_name);
-		return $this->dibi->getAffectedRows();
+	public function delete($entity_id) {
+		return $this->deleteRow($this->table, $entity_id);
 	}
 
 }
