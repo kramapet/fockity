@@ -2,14 +2,11 @@
 
 namespace Fockity;
 
-class EntityFactory implements IEntityFactory {
+class EntityFactory extends AbstractFactory implements IEntityFactory {
 
 	public function create(array $data = NULL) {
 		$row = new EntityRow();
-		foreach ((array) $data as $k => $v) {
-			$cb = array($row, 'set' . ucfirst($k));
-			call_user_func($cb, $v);
-		}
+		$this->setProperties($row, $data);
 
 		return $row;
 	}
