@@ -1,5 +1,7 @@
 <?php
 
+use Fockity\EntityFactory;
+
 class EntityFactoryTest extends PHPUnit_Framework_TestCase {
 
 	/** @var Fockity\EntityFactory */
@@ -8,57 +10,29 @@ class EntityFactoryTest extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->factory = new Fockity\EntityFactory();
+		$this->factory = new EntityFactory();
 	}
 
-	public function testToRegisterAndCreateEntity() {
-		$factory = $this->factory;
+	protected function tearDown() {
+		parent::tearDown();
 
-		$this->assertInstanceOf('Fockity\EntityFactory', $factory);
-
-		$factory->register('post', 'PostEntity');
-		$post = $factory->create('post');
-
-		$this->assertInstanceOf('PostEntity', $post);
-		$this->assertInstanceOf('Fockity\IEntity', $post);
+		$this->factory = NULL;
 	}
 
-	/**
-	 * @expectedException Fockity\EntityNotRegisteredException
-	 */
-	public function testToCreateUndefinedEntity() {
-		$this->factory->create('post');
+	public function testToCreateEntity() {
+		$this->assertInstanceOf("Fockity\\EntityRow", $this->factory->create());
 	}
 
-	/**
-	 * @expectedException Fockity\InvalidEntityException
-	 */
-	public function testToCreateNotIEntityInstance() {
-		$this->factory->register('post', '\stdClass');
+	public function testToCreateEntityWithId() {
+		$row = $this->factory->create(array('id' => 666));
 
-		$this->factory->create('post');
+		$this->assertEquals(666, $row->getId());
 	}
 
-}
+	public function testToCreateEntityWithName() {
+		$row = $this->factory->create(array('name' => 'post'));
 
-class PostEntity implements Fockity\IEntity {
-
-	public function setId($id) {
-	}
-
-	public function setEntityName($name) {
-	}
-
-	public function setProperty($property, $value) {
-	}
-
-	public function getId() {
-	}
-
-	public function getEntityName() {
-	}
-
-	public function getProperty($property) {
+		$this->assertEquals('post', $row->getName());
 	}
 
 }
