@@ -2,7 +2,7 @@
 
 namespace Fockity;
 
-class PropertyMapper extends AbstractMapper {
+class PropertyMapper extends AbstractMapper implements IPropertyMapper {
 
 	public $table = 'property';
 

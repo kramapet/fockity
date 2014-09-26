@@ -3,7 +3,7 @@
 namespace Fockity;
 
 
-class EntityMapper extends AbstractMapper {
+class EntityMapper extends AbstractMapper implements IEntityMapper {
 
 	public $table = 'entity';
 

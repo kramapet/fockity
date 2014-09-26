@@ -2,7 +2,7 @@
 
 namespace Fockity;
 
-class ValueMapper extends AbstractMapper {
+class ValueMapper extends AbstractMapper implements IValueMapper {
 
 	public $table = 'value';
 
