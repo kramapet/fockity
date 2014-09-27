@@ -9,7 +9,8 @@ abstract class AbstractFactory {
 		}
 
 		foreach ($data as $k => $v) {
-			$cb = array($obj, 'set' . ucfirst($k));
+			$cb = array($obj, 'set' . implode(array_map('ucfirst', explode('_', $k))));
+			// $cb = array($obj, $this->getSetFunction($k));
 			call_user_func($cb, $v);
 		}
 	}
