@@ -6,7 +6,8 @@ interface IPropertyFactory {
 	/**
 	 * Create instance of IPropertyRow
 	 *
+	 * @param mixed $data
 	 * @return IPropertyRow
 	 */
-	function create(array $data = NULL);
+	function create($data = NULL);
 }
