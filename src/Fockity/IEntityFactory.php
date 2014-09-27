@@ -6,7 +6,8 @@ interface IEntityFactory {
 	/**
 	 * Create instance of IEntity
 	 *
+	 * @param mixed $data
 	 * @return IEntity
 	 */
-	function create(array $data = NULL);
+	function create($data = NULL);
 }
