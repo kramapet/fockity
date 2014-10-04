@@ -25,4 +25,24 @@ class PropertyRepositoryTest extends DbTestCase {
 	public function testToGetAllProperties() {
 		$this->assertContainsOnlyInstancesOf('Fockity\IPropertyRow', $this->repository->getAll());
 	}
+
+	public function testToDeleteByEntity() {
+		$entity_id = 1;
+		$this->assertEquals(3, $this->repository->deleteByEntity($entity_id));
+	}
+
+	public function testToDeleteProperty() {
+		$property_id = 1;
+		$this->assertEquals(1, $this->repository->delete($property_id));
+	}
+
+	public function testToCreateProperty() {
+		$entity_id = 1;
+		$name = 'enabled';
+		$type = 'boo';
+		$property = $this->repository->create($entity_id, $name, $type);
+
+		$this->assertInstanceOf('Fockity\IPropertyRow', $property);
+		$this->assertTrue($property->getId() > 0);
+	}
 }
