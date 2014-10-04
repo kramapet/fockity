@@ -2,7 +2,7 @@
 
 namespace Fockity;
 
-class EntityRepository {
+class EntityRepository extends AbstractRepository {
 
 	/** @var IEntityMapper */
 	protected $mapper;
@@ -16,12 +16,12 @@ class EntityRepository {
 	}
 
 	public function getAll() {
-		$entities = $this->instantiateFromResult($this->mapper->getAll());
+		$entities = $this->instantiateFromResult($this->mapper->getAll(), $this->factory);
 		return $entities;
 	}	
 
 	public function getByName($name) {
-		$entities = $this->instantiateFromResult($this->mapper->getByName($name));
+		$entities = $this->instantiateFromResult($this->mapper->getByName($name), $this->factory);
 		if (empty($entities)) {
 			throw new EntityNotFoundException("Entity name '$name' not found");
 		}
@@ -41,12 +41,4 @@ class EntityRepository {
 		return $this->mapper->delete($id);
 	}
 
-	private function instantiateFromResult($result) {
-		$entities = array();
-		foreach ($result as $row) {
-			$entities[] = $this->factory->create($row);
-		}
-
-		return $entities;
-	}
 }
