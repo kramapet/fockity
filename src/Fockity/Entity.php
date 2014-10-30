@@ -2,7 +2,7 @@
 
 namespace Fockity;
 
-class Entity {
+class Entity implements IEntity {
 
 	/** @var IEntityRow */
 	private $entity;

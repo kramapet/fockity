@@ -101,6 +101,13 @@ class EntityService {
 		return isset($this->data[get_class($obj)]);
 	}
 
+	/**
+	 * Create instance of IEntity
+	 *
+	 * @param  IEntityRow $entity
+	 * @param  array $properties list of IPropertyRow
+	 * @return IEntity
+	 */
 	protected function instantiateEntity(IEntityRow $entity, array $properties) {
 		return new Entity($entity, $properties);
 	}
