@@ -1,4 +1,3 @@
-drop database `fockity_dbunit`;
 create database if not exists `fockity_dbunit`;
 use fockity_dbunit;
 
