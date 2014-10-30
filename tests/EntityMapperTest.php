@@ -20,7 +20,7 @@ class EntityMapperTest extends DbTestCase {
 
 	public function testToCreateEntity() {
 		$entity_name = 'slug';
-		$entity_props = ['slug'];
+		$entity_props = array('slug');
 
 		$entity_id = $this->mapper->create($entity_name);
 		$this->assertTrue(is_int($entity_id));
