@@ -33,13 +33,29 @@ class EntityService {
 		return $this->entityRepository->delete($entity_id);
 	}
 
+	public function findAll() {
+		$this->fetchEntities();
+		$this->fetchProperties();
+
+		$entities = array();	
+
+		foreach ($this->fetchEntityIndexByName(NULL) as $entity) {
+			$entity = $entity[0];
+			$properties = $this->fetchPropertyIndexByEntityId($entity->getId());
+			$entities[] = $this->instantiateEntity($entity, $properties);	
+		}
+
+		return $entities;
+
+	}
+
 	public function findEntityByName($name) {
 		$this->fetchEntities();
 		$this->fetchProperties();
 
-		$entity = $this->fetchIndex($this->entityRepository, 'getName', $name);
+		$entity = $this->fetchEntityIndexByName($name);
 		$entity = $entity[0];
-		$properties = $this->fetchIndex($this->propertyRepository, 'getEntityId', $entity->getId());
+		$properties = $this->fetchPropertyIndexByEntityId($entity->getId());
 		return $this->instantiateEntity($entity, $properties);
 	}
 
@@ -47,7 +63,7 @@ class EntityService {
 		$this->fetchEntities();
 		$this->fetchProperties();
 
-		$property = $this->fetchIndex($this->propertyRepository, 'getId', $property_id);
+		$property = $this->fetchPropertyIndexById($property_id);
 		$property = $property[0];
 		return $this->fetchIndex($this->entityRepository, 'getId', $property->getEntityId());
 	}
@@ -66,12 +82,21 @@ class EntityService {
 		}
 	}
 
-	private function fetchIndex($obj, $getter, $val) {
+	private function fetchIndex($obj, $getter, $val = NULL) {
 		$classname = get_class($obj);
+
+		if (!isset($this->data[$classname][$getter])) {
+			return NULL;
+		}
+
+		if (!$val) {
+			return $this->data[$classname][$getter];
+		}
 
 		if (!isset($this->data[$classname][$getter][$val])) {
 			return NULL;
 		}
+
 
 		return $this->data[$classname][$getter][$val];
 	}
@@ -99,6 +124,30 @@ class EntityService {
 	 */
 	private function isClassIndexed($obj) {
 		return isset($this->data[get_class($obj)]);
+	}
+
+	private function fetchEntityIndexById($id) {
+		return $this->fetchEntityIndex('getId', $id);
+	}
+
+	private function fetchEntityIndexByName($name) {
+		return $this->fetchEntityIndex('getName', $name);
+	}
+
+	private function fetchEntityIndex($getter, $val) {
+		return $this->fetchIndex($this->entityRepository, $getter, $val);
+	}
+
+	private function fetchPropertyIndexById($id) {
+		return $this->fetchPropertyIndex('getId', $id);
+	}
+
+	private function fetchPropertyIndexByEntityId($id) {
+		return $this->fetchPropertyIndex('getEntityId', $id);
+	}
+
+	private function fetchPropertyIndex($getter, $val) {
+		return $this->fetchIndex($this->propertyRepository, $getter, $val);
 	}
 
 	/**

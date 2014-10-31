@@ -16,7 +16,7 @@ class EntityServiceTest extends DbTestCase {
 		parent::setUp();
 
 		$dibi = $this->createDibi();
-		$entityRepository= new EntityRepository(new EntityMapper($dibi), new EntityFactory());
+		$entityRepository = new EntityRepository(new EntityMapper($dibi), new EntityFactory());
 		$propertyRepository = new PropertyRepository(new PropertyMapper($dibi), new PropertyFactory());
 
 		$this->service = new EntityService($entityRepository, $propertyRepository);
@@ -26,6 +26,10 @@ class EntityServiceTest extends DbTestCase {
 		parent::tearDown();
 
 		$this->service = NULL;
+	}
+
+	public function testToFindAll() {
+		$this->assertContainsOnlyInstancesOf('Fockity\IEntity', $this->service->findAll());	
 	}
 
 	public function testToCreateEntity() {
