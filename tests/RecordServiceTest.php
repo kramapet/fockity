@@ -44,12 +44,7 @@ class RecordServiceTest extends DbTestCase {
 	}
 
 	public function testToFindRecordsByEntityName() {
-
 		$records = $this->service->findByEntityName('post');
-
 		$this->assertContainsOnlyInstancesOf('Fockity\IRecord', $records);
-		var_dump($records);
-
-
 	}
 }
