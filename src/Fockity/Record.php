@@ -62,7 +62,7 @@ class Record implements IRecord {
 	 * @return array IPropertyRow[]
 	 */
 	public function getProperties() {
-		return $this->property_rows;
+		return $this->index[self::PROPERTY_INDEX];
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Record implements IRecord {
 	 * @return array IValueRow[]
 	 */
 	public function getValues() {
-		return $this->value_rows;
+		return $this->index[self::VALUE_INDEX];
 	}
 
 
