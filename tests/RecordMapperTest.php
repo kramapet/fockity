@@ -32,6 +32,11 @@ class RecordMapperTest extends DbTestCase {
 		$this->assertEquals(1, $this->mapper->delete($record_id));
 	}
 
+	public function testToGetRecordById() {
+		$record_id = 1;
+		$this->assertInstanceOf('\DibiResult', $this->mapper->getById($record_id));
+	}
+
 	public function testToGetRecordsByEntity() {
 		$entity_id = 1;
 		$this->assertInstanceOf('\DibiResult', $this->mapper->getByEntity($entity_id));	

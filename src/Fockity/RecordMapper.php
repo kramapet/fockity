@@ -6,9 +6,14 @@ class RecordMapper extends AbstractMapper implements IRecordMapper {
 
 	public $table = 'record';
 
+	public function getById($id) {
+		$id = (array) $id;
+		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [id] IN %in", $id);
+	}
+
 	public function getByEntity($entity_id) {
 		$entity_id = (array) $entity_id;
-		return $this->dibi->query('SELECT * FROM [record] WHERE [entity_id] IN %in', $entity_id);
+		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [entity_id] IN %in", $entity_id);
 	}
 	
 	public function create($entity_id) {

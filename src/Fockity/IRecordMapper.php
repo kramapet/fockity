@@ -5,6 +5,14 @@ namespace Fockity;
 interface IRecordMapper {
 
 	/**
+	 * Get record by ID
+	 *
+	 * @param array|int $id
+	 * @return array|\Travesrsable
+	 */
+	function getById($id);
+
+	/**
 	 * Get records by entity id(s)
 	 *
 	 * @param array|int $entity_id
