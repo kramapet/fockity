@@ -9,6 +9,10 @@ class RecordRepository extends AbstractRepository {
 		$this->factory = $factory;
 	}	
 
+	public function getById($id) {
+		return $this->instantiateFromResult($this->mapper->getById($id), $this->factory);
+	}
+
 	public function getByEntity($entity_id) {
 		return $this->instantiateFromResult($this->mapper->getByEntity($entity_id), $this->factory);	
 	}

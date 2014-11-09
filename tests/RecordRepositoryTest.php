@@ -24,6 +24,13 @@ class RecordRepositoryTest extends DbTestCase {
 		$this->repository = NULL;
 	}
 
+	public function testToGetRecordById() {
+		$record_id = 1;
+
+		$records = $this->repository->getById($record_id);
+		$this->assertContainsOnlyInstancesOf('Fockity\IRecordRow', $records);
+	}
+
 	public function testToGetRecordsByEntity() {
 		$entity_id = 1;
 
