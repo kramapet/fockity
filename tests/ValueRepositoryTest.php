@@ -42,4 +42,32 @@ class ValueRepositoryTest extends DbTestCase {
 		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $this->repository->getByRecord($record_id));
 	}
 
+	public function testToGetEquals() {
+		$phrase = 'Insurance';
+		$values = $this->repository->getEquals($phrase);
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetEqualsIn() {
+		$property_id = 3;
+		$phrase = 'Insurance';
+
+		$values = $this->repository->getEqualsIn($property_id, $phrase);
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetLike() {
+		$phrase = '%sur%';
+
+		$values = $this->repository->getLike($phrase);
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetLikeIn() {
+		$property_id = 3;
+		$phrase = '%sur%';
+		
+		$values = $this->repository->getLikeIn($property_id, $phrase);	
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
 }
