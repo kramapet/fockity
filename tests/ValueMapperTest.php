@@ -10,12 +10,37 @@ class ValueMapperTest extends DbTestCase {
 		parent::setUp();
 
 		$this->mapper = new ValueMapper($this->createDibi());
-
 	}
 
 	protected function tearDown() {
 		parent::tearDown();
 		$this->mapper = NULL;
+	}
+
+	public function testToGetValueEqualsIn() {
+		$phrase = 'Insurance';
+		$property_id = 3; // 'name' property in 'post' entity
+
+		$this->assertEquals(1, count($this->mapper->getEqualsIn($property_id, $phrase)));
+	}
+
+	public function testToGetValueEquals() {
+		$phrase = 'Insurance';
+
+		$this->assertEquals(1, count($this->mapper->getEquals($phrase)));
+	}
+
+	public function testToGetValueLike() {
+		$phrase = 'Insurance%';
+
+		$this->assertEquals(3, count($this->mapper->getLike($phrase)));
+	}
+
+	public function testToGetValueLikeIn() {
+		$phrase = '%om%';
+		$property_id = 5; // 'name' property in 'post' entity
+
+		$this->assertEquals(2, count($this->mapper->getLikeIn($property_id, $phrase)));
 	}
 
 	public function testToGetValueByRecords() {
