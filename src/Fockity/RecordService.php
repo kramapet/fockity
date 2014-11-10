@@ -63,20 +63,48 @@ class RecordService {
 		$records = $value_rows = $record_rows = array();
 
 		return $this->getRecords($this->recordRepository->getByEntity($entity->getId()));
+	}
 
-		foreach ($this->recordRepository->getByEntity($entity->getId()) as $record_row) {
-			$record_rows[$record_row->getId()] = $record_row;
+	public function findByValueEquals($phrase) {
+		$record_ids = array();
+
+		foreach ($this->valueRepository->getEquals($phrase) as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
 		}
 
-		foreach ($this->valueRepository->getByRecord(array_keys($record_rows)) as $value_row) {
-			$values_rows[$value_row->getRecordId()][] = $value_row;
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueEqualsIn($property, $phrase) {
+		$record_ids = array();
+		$property_ids = $this->getPropertyIds((array) $property);
+
+		foreach ($this->valueRepository->getEqualsIn($property_ids, $phrase) as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
 		}
 
-		foreach ($values_rows as $record_id => $values) {
-			$records[] = $this->instantiateRecord($record_rows[$record_id], $entity->getProperties(), $values);
-		}	
+		return $this->findById(array_unique($record_ids));
+	}
 
-		return $records;
+	public function findByValueLike($phrase) {
+		$record_ids = array();
+
+		foreach ($this->valueRepository->getLike($phrase) as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueLikeIn($property, $phrase) {
+		$property_ids = $this->getPropertyIds((array) $property);
+		$record_ids = array();
+
+		foreach ($this->valueRepository->getLikeIn($property_ids, $phrase) as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
 	}
 
 	/**
@@ -122,6 +150,37 @@ class RecordService {
 
 	private function getEntityById($id) {
 		return $this->getEntity('getId', $id);
+	}
+
+	private function getPropertyIds(array $properties) {
+		$property_ids = array();
+
+		foreach ((array) $properties as $prop) {
+			if (is_numeric($prop)) {
+				// property is id
+				$property_ids[] = $prop;
+			} else {
+				foreach ($this->getPropertiesByName($prop) as $property_obj) {
+					$property_ids[] = $property_obj->getId();
+				}
+			}
+		}
+
+		return $property_ids;
+	}
+
+	private function getPropertiesByName($name) {
+		$properties = array();
+
+		foreach ($this->entities as $entity) {
+			foreach ($entity->getProperties() as $property) {
+				if ($property->getName() === $name) {
+					$properties[$property->getId()] = $property;
+				}
+			}
+		}
+
+		return $properties;
 	}
 
 	private function instantiateRecord(IRecordRow $record, array $properties, array $values) {

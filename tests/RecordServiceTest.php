@@ -54,6 +54,36 @@ class RecordServiceTest extends DbTestCase {
 		$this->assertContainsOnlyInstancesOf('Fockity\IRecord', $records);
 	}
 
+	public function testToFindRecordsByValueEquals() {
+		$records = $this->service->findByValueEquals('Insurance');
+
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueEqualsIn() {
+		$property_name = 'name';
+		$phrase = 'People';
+
+		$records = $this->service->findByValueEqualsIn($property_name, $phrase);
+
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueLike() {
+		$phrase = '%sur%';
+		$records = $this->service->findByValueLike($phrase);
+
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueLikeIn() {
+		$property_name = 'name';
+		$phrase = '%ople';
+		$records = $this->service->findByValueLikeIn($property_name, $phrase);
+
+		$this->assertCount(1, $records);
+	}
+
 	public function testToCreateRecord() {
 		$entity = 'page';
 		$data['name'] = 'Hello World';
