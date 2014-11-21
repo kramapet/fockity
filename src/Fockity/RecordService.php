@@ -37,6 +37,19 @@ class RecordService {
 		return $this->instantiateRecord($record, $properties, $values);
 	}
 
+	public function update(Record $record) {
+		$old_record = $this->findById($record->getId());
+		$old_record = $old_record[0];
+
+		$old_values = $old_record->getValues();
+
+		foreach ($record->getValues() as $property_id => $value) {
+			if ($value->getValue() !== $old_values[$property_id]->getValue()) {
+				$this->valueRepository->update($value->getId(), $value->getValue());
+			}
+		}
+	}
+
 	public function delete($id) {
 		$id = (array) $id;
 		$record_ids = $value_ids = array();
