@@ -19,6 +19,10 @@ class ValueRepository extends AbstractRepository {
 		return $this->factory->create($data);
 	}
 
+	public function update($value_id, $value) {
+		return $this->mapper->update($value_id, $value);
+	}
+
 	public function delete($id) {
 		return $this->mapper->delete($id);
 	}

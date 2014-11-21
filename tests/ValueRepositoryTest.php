@@ -32,6 +32,13 @@ class ValueRepositoryTest extends DbTestCase {
 		$this->assertInstanceOf('Fockity\IValueRow', $this->repository->create($record_id, $property_id, $value));
 	}
 
+	public function testToUpdateValue() {
+		$value_id = 1;
+		$value = 'updated';
+
+		$this->assertEquals(1, $this->repository->update($value_id, $value));
+	}
+
 	public function testToDeleteValue() {
 		$value_id = 1;
 		$this->assertEquals(1, $this->repository->delete($value_id));
