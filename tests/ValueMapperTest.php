@@ -21,31 +21,47 @@ class ValueMapperTest extends DbTestCase {
 		$phrase = 'Insurance';
 		$property_id = 3; // 'name' property in 'post' entity
 
-		$this->assertEquals(1, count($this->mapper->getEqualsIn($property_id, $phrase)));
+		$this->assertCount(1, $this->mapper->getEqualsIn($property_id, $phrase));
 	}
 
 	public function testToGetValueEquals() {
 		$phrase = 'Insurance';
-
-		$this->assertEquals(1, count($this->mapper->getEquals($phrase)));
+		$this->assertCount(1, $this->mapper->getEquals($phrase));
 	}
 
 	public function testToGetValueLike() {
 		$phrase = 'Insurance%';
 
-		$this->assertEquals(3, count($this->mapper->getLike($phrase)));
+		$this->assertCount(3, $this->mapper->getLike($phrase));
 	}
 
 	public function testToGetValueLikeIn() {
 		$phrase = '%om%';
 		$property_id = 5; // 'name' property in 'post' entity
 
-		$this->assertEquals(2, count($this->mapper->getLikeIn($property_id, $phrase)));
+		$this->assertCount(2, $this->mapper->getLikeIn($property_id, $phrase));
 	}
 
 	public function testToGetValueByRecords() {
 		$record_id = array(1, 2);
 		$this->assertInstanceOf('\DibiResult', $this->mapper->getByRecord($record_id));
+	}
+
+	public function testToGetRecordIdsEquals() {
+		$phrase = 'People';
+		$record_ids = $this->mapper->getRecordIdsEquals($phrase);
+
+		$this->assertContains(2, $record_ids);
+		
+	}
+
+	public function testToGetRecordIdsEqualsIn() {
+		$phrase = 'Insurance';
+		$property_id = 3;
+		$record_ids = $this->mapper->getRecordIdsEqualsIn($phrase, $property_id);
+		$expected_record_id = 1;
+
+		$this->assertContains($expected_record_id, $record_ids);
 	}
 
 	public function testToCreateValue() {
@@ -66,8 +82,4 @@ class ValueMapperTest extends DbTestCase {
 		$new_value = 'hello';
 		$this->assertEquals(1, $this->mapper->update($value_id, $new_value));
 	}
-
-
-
-
 }

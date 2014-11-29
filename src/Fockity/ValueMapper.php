@@ -34,6 +34,59 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 		return $this->dibi->query('SELECT * FROM [value] WHERE [record_id] IN %in', $id);
 	}
 
+	public function getRecordIdsEquals($phrase, $limit = 100, $orderBy = NULL, $ascending = FALSE) {
+		return $this->getRecordIdsEqualsIn($phrase, NULL, $limit, $orderBy, $ascending);
+	}
+
+	public function getRecordIdsEqualsIn($phrase, $property_id = NULL, $limit = 100, $orderBy = NULL, $ascending = FALSE) {
+		$q = array(
+			'SELECT DISTINCT [record_id] FROM %n', $this->table
+		);
+
+		$phrase = (array) $phrase;
+			array_push($q,' WHERE [record_id] IN ',
+				'(SELECT DISTINCT [record_id] FROM %n', $this->table,
+				' WHERE [value] IN %in', $phrase);
+			
+		if ($property_id) {
+			if (!is_array($property_id)) {
+				$property_id = (array) $property_id;
+			}
+
+			array_push($q, ' AND [property_id] IN %in', $property_id);
+		}
+
+		array_push($q, ')'); // end subquery
+
+		if ($orderBy) {
+			$orderType = 'DESC';
+			if ($ascending) {
+				$orderType = 'ASC';
+			}
+
+			array_push($q, ' AND [property_id] IN %in', $orderBy);
+			array_push($q, ' ORDER BY [value]');
+		}
+
+		if (!is_array($limit)) {
+			$limit = array($limit, 0);
+		}
+
+		array_push($q, ' LIMIT %i', $limit[0], ' OFFSET %i', $limit[1]);
+
+		$ids = array();
+		foreach ($this->dibi->query($q) as $row) {
+			$ids[] = $row->record_id;
+		}
+
+		return $ids;
+
+	}
+
+	public function getRecordIds($limit = 100, $orderBy = NULL, $ascending = FALSE) {
+
+	}
+
 	public function create($record_id, $property_id, $value) {
 		$data['record_id'] = $record_id;
 		$data['property_id'] = $property_id;
