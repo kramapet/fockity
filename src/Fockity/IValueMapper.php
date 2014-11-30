@@ -3,6 +3,12 @@
 namespace Fockity;
 
 interface IValueMapper {
+
+	const OP_EQUALS = ':op_equals',
+		OP_STARTS_WITH = ':op_starts_with',
+		OP_ENDS_WITH = ':op_ends_with',
+		OP_CONTAINS = ':op_contains';
+
 	/**
 	 * Get values by record id(s)
 	 *
