@@ -47,6 +47,14 @@ class ValueMapperTest extends DbTestCase {
 		$this->assertInstanceOf('\DibiResult', $this->mapper->getByRecord($record_id));
 	}
 
+	public function testToGetRecordIdsOrderBy() {
+		$property_id = 3;
+
+		$expected = array(1, 2);
+		$this->assertEquals($expected, $this->mapper->getRecordIds($property_id));
+		$this->assertEquals(array_reverse($expected), $this->mapper->getRecordIds($property_id, TRUE));
+	}
+
 	public function testToGetRecordIdsEquals() {
 		$phrase = 'People';
 		$record_ids = $this->mapper->getRecordIdsEquals($phrase);
