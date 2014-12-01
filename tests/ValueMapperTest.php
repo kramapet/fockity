@@ -44,15 +44,24 @@ class ValueMapperTest extends DbTestCase {
 
 	public function testToGetValueByRecords() {
 		$record_id = array(1, 2);
-		$this->assertInstanceOf('\DibiResult', $this->mapper->getByRecord($record_id));
+		$this->assertInstanceOf(
+			'\DibiResult', $this->mapper->getByRecord($record_id)
+		);
 	}
 
 	public function testToGetRecordIdsOrderBy() {
 		$property_id = 3;
 
 		$expected = array(1, 2);
-		$this->assertEquals($expected, $this->mapper->getRecordIds($property_id));
-		$this->assertEquals(array_reverse($expected), $this->mapper->getRecordIds($property_id, TRUE));
+		$this->assertEquals(
+			$expected, 
+			$this->mapper->getRecordIds($property_id)
+		);
+
+		$this->assertEquals(
+			array_reverse($expected), 
+			$this->mapper->getRecordIds($property_id, TRUE)
+		);
 	}
 
 	public function testToGetRecordIdsEquals() {
@@ -66,18 +75,39 @@ class ValueMapperTest extends DbTestCase {
 	public function testToGetRecordIdsEqualsIn() {
 		$phrase = 'Insurance';
 		$property_id = 3;
-		$record_ids = $this->mapper->getRecordIdsEqualsIn($phrase, $property_id);
+		$record_ids = $this->mapper->getRecordIdsEqualsIn(
+			$phrase, $property_id
+		);
+
 		$expected_record_id = 1;
 
 		$this->assertContains($expected_record_id, $record_ids);
 	}
+
+	public function testToGetRecordIdsStartsWith() {
+		$record_ids = $this->mapper->getRecordIdsStartsWith('Ins');
+		$this->assertContains(1, $record_ids);
+	}
+
+	public function testToGetRecordIdsEndsWith() {
+		$record_ids = $this->mapper->getRecordIdsEndsWith('nce');
+		$this->assertContains(1, $record_ids);
+	}
+
+	public function testToGetRecordIdsContains() {
+		$record_ids = $this->mapper->getRecordIdsContains('sur');
+		$this->assertContains(1, $record_ids);
+	}
+
 
 	public function testToCreateValue() {
 		$property_id = 1;
 		$record_id = 1;
 		$data = 'Something really really ugly';
 
-		$this->assertTrue(is_int($this->mapper->create($record_id, $property_id, $data)));
+		$test = is_int($this->mapper->create($record_id, $property_id, $data));
+
+		$this->assertTrue($test);
 	}
 
 	public function testToDeleteValue() {
@@ -88,6 +118,8 @@ class ValueMapperTest extends DbTestCase {
 	public function testToUpdateValue() {
 		$value_id = 1;
 		$new_value = 'hello';
-		$this->assertEquals(1, $this->mapper->update($value_id, $new_value));
+		$this->assertEquals(
+			1, $this->mapper->update($value_id, $new_value)
+		);
 	}
 }

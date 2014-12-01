@@ -38,35 +38,173 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 		return $this->dibi->query('SELECT * FROM [value] WHERE [record_id] IN %in', $id);
 	}
 
-	public function getRecordIdsEquals($phrase, $orderBy = NULL, $descending = FALSE, $limit = self::DEFAULT_LIMIT, $offset = self::DEFAULT_OFFSET) {
-		
+	public function getRecordIdsEquals(
+		$phrase, 
+		$orderBy = NULL, 
+		$descending = FALSE, 
+		$limit = self::DEFAULT_LIMIT, 
+		$offset = self::DEFAULT_OFFSET
+	) {
 		$filter = $this->createFilter(self::OP_EQUALS, $phrase);
-		if ($orderBy) {
-			$orderBy = $this->createOrder($orderBy, (bool) $descending);
-		}
-		$limit = $this->createLimit((int) $limit, (int) $offset);
-
-		return $this->getRecordIdsBy($filter, $orderBy, $limit);
-
-	}
-
-	public function getRecordIdsEqualsIn($phrase, $property_id = NULL, $orderBy = NULL, $descending = FALSE, $limit = self::DEFAULT_LIMIT, $offset = self::DEFAULT_OFFSET) {
-		$filter = $this->createFilter(self::OP_EQUALS, $phrase, $property_id);
 		if ($orderBy) {
 			$orderBy = $this->createOrder($orderBy, $descending);
 		}
-		$limit = $this->createLimit((int) $limit, (int) $offset);
+		$limit = $this->createLimit($limit, $offset);
+
+		return $this->getRecordIdsBy($filter, $orderBy, $limit);
+
+	}
+
+	public function getRecordIdsEqualsIn(
+		$phrase, 
+		$property_id = NULL, 
+		$orderBy = NULL, 
+		$descending = FALSE, 
+		$limit = self::DEFAULT_LIMIT, 
+		$offset = self::DEFAULT_OFFSET
+	) {
+		$filter = $this->createFilter(self::OP_EQUALS, $phrase, $property_id);
+
+		if ($orderBy) {
+			$orderBy = $this->createOrder($orderBy, $descending);
+		}
+
+		$limit = $this->createLimit($limit, $offset);
 
 		return $this->getRecordIdsBy($filter, $orderBy, $limit);
 	}
 
-	public function getRecordIds($orderBy = NULL, $descending = FALSE, $limit = 100, $offset = 0) {
+	public function getRecordIdsStartsWithIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		$filter = $this->createFilter(
+			self::OP_STARTS_WITH, 
+			$phrase, 
+			$property_id
+		);
+
 		if ($orderBy) {
-			$orderBy = $this->createOrder($orderBy, (bool) $descending);
+			$orderBy = $this->createOrder($orderBy, $descending);
 		}
 
-		$limit = $this->createLimit((int) $limit, (int) $offset);
-		
+		$limit = $this->createLimit($limit, $offset);
+
+		return $this->getRecordIdsBy($filter, $orderBy, $limit);
+	}
+
+	public function getRecordIdsStartsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		return $this->getRecordIdsStartsWithIn(
+			$phrase,
+			NULL,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+	}
+
+	public function getRecordIdsEndsWithIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		$filter = $this->createFilter(
+			self::OP_ENDS_WITH,
+			$phrase,
+			$property_id
+		);
+
+		if ($orderBy) {
+			$orderBy = $this->createOrder($orderBy, $descending);
+		}
+
+		$limit = $this->createLimit($limit, $offset);
+
+		return $this->getRecordIdsBy($filter, $orderBy, $limit);
+	}
+
+	public function getRecordIdsEndsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		return $this->getRecordIdsEndsWithIn(
+			$phrase,
+			NULL,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+	}
+
+	public function getRecordIdsContainsIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		$filter = $this->createFilter(
+			self::OP_CONTAINS,
+			$phrase,
+			$property_id
+		);
+
+		if ($orderBy) {
+			$orderBy = $this->createOrder($orderBy, $descending);
+		}
+
+		$limit = $this->createLimit($limit, $offset);
+
+		return $this->getRecordIdsBy($filter, $orderBy, $limit);
+	}
+
+	public function getRecordIdsContains(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = self::DEFAULT_LIMIT,
+		$offset = self::DEFAULT_OFFSET
+	) {
+		return $this->getRecordIdsContainsIn(
+			$phrase,
+			NULL,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+	}
+
+	public function getRecordIds(
+		$orderBy = NULL, 
+		$descending = FALSE, 
+		$limit = self::DEFAULT_LIMIT, 
+		$offset = self::DEFAULT_OFFSET
+	) {
+		if ($orderBy) {
+			$orderBy = $this->createOrder($orderBy, $descending);
+		}
+
+		$limit = $this->createLimit($limit, $offset);
 		return $this->getRecordIdsBy(NULL, $orderBy, $limit);
 
 	}
