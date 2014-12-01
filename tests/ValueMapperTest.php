@@ -53,22 +53,41 @@ class ValueMapperTest extends DbTestCase {
 		$property_id = 3;
 
 		$expected = array(1, 2);
-		$this->assertEquals(
-			$expected, 
-			$this->mapper->getRecordIds($property_id)
+		$record_ids = $this->mapper->getRecordIds($property_id);
+
+		$this->assertInstanceOf(
+			'\DibiResult',
+			$record_ids
 		);
 
+		$ids = array();
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+
+		$this->assertEquals($expected, $ids);
+
+		$record_ids = $this->mapper->getRecordIds($property_id, TRUE);
+		$ids = array();
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+
 		$this->assertEquals(
-			array_reverse($expected), 
-			$this->mapper->getRecordIds($property_id, TRUE)
+			array_reverse($expected),
+			$ids
 		);
 	}
 
 	public function testToGetRecordIdsEquals() {
 		$phrase = 'People';
 		$record_ids = $this->mapper->getRecordIdsEquals($phrase);
+		$ids = array();
 
-		$this->assertContains(2, $record_ids);
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+		$this->assertContains(2, $ids);
 		
 	}
 
@@ -78,25 +97,46 @@ class ValueMapperTest extends DbTestCase {
 		$record_ids = $this->mapper->getRecordIdsEqualsIn(
 			$phrase, $property_id
 		);
+		$ids = array();
 
 		$expected_record_id = 1;
 
-		$this->assertContains($expected_record_id, $record_ids);
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+
+		$this->assertContains($expected_record_id, $ids);
 	}
 
 	public function testToGetRecordIdsStartsWith() {
 		$record_ids = $this->mapper->getRecordIdsStartsWith('Ins');
-		$this->assertContains(1, $record_ids);
+		$ids = array();
+
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+		
+		$this->assertContains(1, $ids);
 	}
 
 	public function testToGetRecordIdsEndsWith() {
 		$record_ids = $this->mapper->getRecordIdsEndsWith('nce');
-		$this->assertContains(1, $record_ids);
+		$ids = array();
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+		$this->assertContains(1, $ids);
 	}
 
 	public function testToGetRecordIdsContains() {
 		$record_ids = $this->mapper->getRecordIdsContains('sur');
-		$this->assertContains(1, $record_ids);
+		$ids = array();
+
+		foreach ($record_ids as $r) {
+			$ids[] = $r->record_id;
+		}
+
+		$this->assertContains(1, $ids);
 	}
 
 

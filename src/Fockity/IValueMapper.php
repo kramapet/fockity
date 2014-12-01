@@ -7,7 +7,9 @@ interface IValueMapper {
 	const OP_EQUALS = ':op_equals',
 		OP_STARTS_WITH = ':op_starts_with',
 		OP_ENDS_WITH = ':op_ends_with',
-		OP_CONTAINS = ':op_contains';
+		OP_CONTAINS = ':op_contains',
+		DEFAULT_LIMIT = 100,
+		DEFAULT_OFFSET = 0;
 
 	/**
 	 * Get values by record id(s)

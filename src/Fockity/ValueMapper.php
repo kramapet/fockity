@@ -4,9 +4,6 @@ namespace Fockity;
 
 class ValueMapper extends AbstractMapper implements IValueMapper {
 
-	const DEFAULT_LIMIT = 100,
-		DEFAULT_OFFSET = 0;
-
 	/** @var string table name */
 	protected $table = 'value';
 
@@ -258,13 +255,7 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 
 		// $this->dibi->test($query);
 
-		$ids = array();
-		$result = $this->dibi->query($query);
-		foreach ($result as $row) {
-			$ids[] = $row->record_id;
-		}
-
-		return $ids;
+		return $this->dibi->query($query);
 	}
 
 	/**
