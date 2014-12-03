@@ -46,4 +46,165 @@ class ValueRepository extends AbstractRepository {
 	public function getByRecord($id) {
 		return $this->instantiateFromResult($this->mapper->getByRecord($id), $this->factory);
 	}
+
+	public function getRecordIdsEquals(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsEquals(
+				$phrase,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsEqualsIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsEqualsIn(
+				$phrase,
+				$property_id,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsStartsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsStartsWith(
+				$phrase,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsStartsWithIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsStartsWithIn(
+				$phrase,
+				$property_id,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsEndsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsEndsWith(
+				$phrase,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsEndsWithIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsEndsWithIn(
+				$phrase,
+				$property_id,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsContains(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsContains(
+				$phrase,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
+	public function getRecordIdsContainsIn(
+		$phrase,
+		$property_id = NULL,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIdsContains(
+				$phrase,
+				$property_id,
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
 }

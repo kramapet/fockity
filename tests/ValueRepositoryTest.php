@@ -49,32 +49,70 @@ class ValueRepositoryTest extends DbTestCase {
 		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $this->repository->getByRecord($record_id));
 	}
 
-	public function testToGetEquals() {
+	public function testToGetRecordIdsEquals() {
 		$phrase = 'Insurance';
-		$values = $this->repository->getEquals($phrase);
+		$values = $this->repository->getRecordIdsEquals($phrase);
 		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
 	}
 
-	public function testToGetEqualsIn() {
+	public function testToGetRecordIdsEqualsIn() {
 		$property_id = 3;
 		$phrase = 'Insurance';
 
-		$values = $this->repository->getEqualsIn($property_id, $phrase);
+		$values = $this->repository->getRecordIdsEqualsIn($property_id, $phrase);
+		$this->assertContainsOnlyInstancesof('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetRecordIdsStartsWith() {
+		$phrase = 'Ins';
+
+		$values = $this->repository->getRecordIdsStartsWith($phrase);
 		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
 	}
 
-	public function testToGetLike() {
-		$phrase = '%sur%';
-
-		$values = $this->repository->getLike($phrase);
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
-	}
-
-	public function testToGetLikeIn() {
+	public function testToGetRecordIdsStartsWithIn() {
+		$phrase = 'Ins';
 		$property_id = 3;
-		$phrase = '%sur%';
+
+		$values = $this->repository->getRecordIdsStartsWithIn(
+			$phrase, 
+			$property_id
+		);
+
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetRecordIdsEndsWith() {
+		$phrase = 'Ins';
+
+		$values = $this->repository->getRecordIdsEndsWith($phrase);
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetRecordIdsEndsWithIn() {
+		$phrase = 'Ins';
+		$property_id = 3;
+
+		$values = $this->repository->getRecordIdsEndsWithIn(
+			$phrase, 
+			$property_id
+		);
+
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetRecordIdsContains() {
+		$phrase = 'sur';
+
+		$values = $this->repository->getRecordIdsContains($phrase);
+		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+	}
+
+	public function testToGetRecordIdsContainsIn() {
+		$property_id = 3;
+		$phrase = 'sur';
 		
-		$values = $this->repository->getLikeIn($property_id, $phrase);	
+		$values = $this->repository->getRecordIdsContainsIn($property_id, $phrase);	
 		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
 	}
 }
