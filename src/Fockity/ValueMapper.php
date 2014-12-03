@@ -10,21 +10,31 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 	public function getEqualsIn($property_id, $phrase) {
 		$property_id = (array) $property_id;
 
-		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [property_id] IN %in", $property_id, " AND [value] = %s", $phrase);
+		return $this->dibi->query("SELECT * 
+			FROM [{$this->table}] 
+			WHERE [property_id] IN %in", $property_id, 
+			" AND [value] = %s", $phrase);
 	}
 
 	public function getEquals($phrase) {
-		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [value] = %s", $phrase);
+		return $this->dibi->query("SELECT * 
+			FROM [{$this->table}] 
+			WHERE [value] = %s", $phrase);
 	}
 
 	public function getLike($phrase) {
-		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [value] LIKE %s", $phrase);
+		return $this->dibi->query("SELECT * 
+			FROM [{$this->table}] 
+			WHERE [value] LIKE %s", $phrase);
 	}
 
 	public function getLikeIn($property_id, $phrase) {
 		$property_id = (array) $property_id;
 
-		return $this->dibi->query("SELECT * FROM [{$this->table}] WHERE [property_id] IN %in", $property_id, " AND [value] LIKE %s", $phrase);
+		return $this->dibi->query("SELECT * 
+			FROM [{$this->table}] 
+			WHERE [property_id] IN %in", $property_id, 
+			" AND [value] LIKE %s", $phrase);
 	}
 
 	public function getByRecord($id) {
@@ -32,7 +42,9 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 			$id = (array) $id;
 		}
 
-		return $this->dibi->query('SELECT * FROM [value] WHERE [record_id] IN %in', $id);
+		return $this->dibi->query('SELECT * 
+			FROM [value] 
+			WHERE [record_id] IN %in', $id);
 	}
 
 	public function getRecordIdsEquals(
