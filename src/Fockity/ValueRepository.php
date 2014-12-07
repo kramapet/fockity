@@ -195,7 +195,7 @@ class ValueRepository extends AbstractRepository {
 		$offset = IValueMapper::DEFAULT_OFFSET
 	) {
 		return $this->instantiateFromResult(
-			$this->mapper->getRecordIdsContains(
+			$this->mapper->getRecordIdsContainsIn(
 				$phrase,
 				$property_id,
 				$orderBy,
