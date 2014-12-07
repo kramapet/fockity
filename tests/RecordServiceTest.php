@@ -18,6 +18,8 @@ use Fockity\RecordService,
 
 class RecordServiceTest extends DbTestCase {
 
+	const RECORD_INSTANCE = 'Fockity\IRecord';
+
 	/** @var RecordService */
 	protected $service;
 
@@ -46,17 +48,17 @@ class RecordServiceTest extends DbTestCase {
 		$ids = array(1, 2);
 
 		$records = $this->service->findById($ids);
-		$this->assertContainsOnlyInstancesOf('Fockity\IRecord', $records);
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 	}
 
 	public function testToFindRecordsByEntityName() {
 		$records = $this->service->findByEntityName('post');
-		$this->assertContainsOnlyInstancesOf('Fockity\IRecord', $records);
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 	}
 
 	public function testToFindRecordsByValueEquals() {
 		$records = $this->service->findByValueEquals('Insurance');
-
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 		$this->assertCount(1, $records);
 	}
 
@@ -66,21 +68,58 @@ class RecordServiceTest extends DbTestCase {
 
 		$records = $this->service->findByValueEqualsIn($property_name, $phrase);
 
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 		$this->assertCount(1, $records);
 	}
 
-	public function testToFindRecordByValueLike() {
-		$phrase = '%sur%';
-		$records = $this->service->findByValueLike($phrase);
+	public function testToFindRecordByValueContains() {
+		$phrase = 'sur';
+		$records = $this->service->findByValueContains($phrase);
 
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 		$this->assertCount(1, $records);
 	}
 
-	public function testToFindRecordByValueLikeIn() {
+	public function testToFindRecordByValueContainsIn() {
 		$property_name = 'name';
-		$phrase = '%ople';
-		$records = $this->service->findByValueLikeIn($property_name, $phrase);
+		$phrase = 'eo';
+		$records = $this->service->findByValueContainsIn($property_name, $phrase);
 
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueStartsWith() {
+		$phrase = 'Peo';
+		$records = $this->service->findByValueStartsWith($phrase);
+
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueStartsWithIn() {
+		$phrase = 'Peo';
+		$property_name = 'name';
+		$records = $this->service->findByValueStartsWithIn($property_name, $phrase);
+
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueEndsWith() {
+		$phrase = 'ople';
+		$records = $this->service->findByValueEndsWith($phrase);
+
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
+		$this->assertCount(1, $records);
+	}
+
+	public function testToFindRecordByValueEndsWithIn() {
+		$property_name = 'name';
+		$phrase = 'ople';
+		$records = $this->service->findByValueEndsWithIn($property_name, $phrase);
+
+		$this->assertContainsOnlyInstancesOf(self::RECORD_INSTANCE, $records);
 		$this->assertCount(1, $records);
 	}
 
@@ -91,7 +130,7 @@ class RecordServiceTest extends DbTestCase {
 
 		$record = $this->service->create($entity, $data);
 
-		$this->assertInstanceOf('Fockity\IRecord', $record);
+		$this->assertInstanceOf(self::RECORD_INSTANCE, $record);
 		$this->assertEquals($data['name'], $record->getValue('name')->getValue());
 		$this->assertEquals($data['content'], $record->getValue('content')->getValue());
 		$this->assertInternalType('int', $record->getId());

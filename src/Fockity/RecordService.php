@@ -13,7 +13,15 @@ class RecordService {
 	/** @var array IEntity */
 	protected $entities;
 
-	public function __construct(RecordRepository $record_repository, ValueRepository $value_repository, array $entities) {
+	/** @var int default limit specifying number 
+	  of records to get in one query  */
+	public static $default_limit = 100;
+
+	public function __construct(
+		RecordRepository $record_repository, 
+		ValueRepository $value_repository, 
+		array $entities
+	) {
 		$this->recordRepository = $record_repository;
 		$this->valueRepository = $value_repository;
 		$this->entities = $entities;
@@ -78,10 +86,26 @@ class RecordService {
 		return $this->getRecords($this->recordRepository->getByEntity($entity->getId()));
 	}
 
-	public function findByValueEquals($phrase) {
+	public function findByValueEquals(
+		$phrase, 
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+
 		$record_ids = array();
 
-		foreach ($this->valueRepository->getEquals($phrase) as $value_row) {
+		$values = $this->valueRepository->getRecordIdsEquals(
+			$phrase, 
+			$orderBy, 
+			$descending, 
+			$limit, 
+			$offset
+		);
+
+		foreach ($values as $value_row) {
 			$record_ids[] = $value_row->getRecordId();
 		}
 
@@ -114,6 +138,168 @@ class RecordService {
 		$record_ids = array();
 
 		foreach ($this->valueRepository->getLikeIn($property_ids, $phrase) as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueStartsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$record_ids = array();
+
+		$values = $this->valueRepository->getRecordIdsStartsWith(
+			$phrase,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueEndsWith(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$record_ids = array();
+
+		$values = $this->valueRepository->getRecordIdsEndsWith(
+			$phrase,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueStartsWithIn(
+		$property_name,
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$property_ids = $this->getPropertyIds($property_name);
+		$record_ids = array();
+
+		$values = $this->valueRepository->getRecordIdsStartsWithIn(
+			$phrase,
+			$property_ids,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueEndsWithIn(
+		$property_name,
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$record_ids = array();
+		$property_ids = $this->getPropertyIds($property_name);
+
+
+		$values = $this->valueRepository->getRecordIdsEndsWithIn(
+			$phrase,
+			$property_ids,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueContainsIn(
+		$property_name,
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL, 
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$record_ids = array();
+		$property_ids = $this->getPropertyIds($property_name);
+
+		$values = $this->valueRepository->getRecordIdsContainsIn(
+			$phrase,
+			$property_ids,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+
+		return $this->findById(array_unique($record_ids));
+	}
+
+	public function findByValueContains(
+		$phrase,
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$record_ids = array();
+
+		$values = $this->valueRepository->getRecordIdsContains(
+			$phrase,
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+
+		foreach ($values as $value_row) {
 			$record_ids[] = $value_row->getRecordId();
 		}
 
@@ -165,7 +351,7 @@ class RecordService {
 		return $this->getEntity('getId', $id);
 	}
 
-	private function getPropertyIds(array $properties) {
+	private function getPropertyIds($properties) {
 		$property_ids = array();
 
 		foreach ((array) $properties as $prop) {
@@ -198,6 +384,12 @@ class RecordService {
 
 	private function instantiateRecord(IRecordRow $record, array $properties, array $values) {
 		return new Record($record, $properties, $values);
+	}
+
+	private function setDefaultLimitIfNull(& $limit) {
+		if ($limit === NULL) {
+			$limit = self::$default_limit;
+		}
 	}
 
 }
