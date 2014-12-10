@@ -80,7 +80,8 @@ class RecordService {
 
 	public function findById($id) {
 		$id = (array) $id;
-		return $this->getRecords($this->recordRepository->getById($id));
+		$records = $this->getRecords($this->recordRepository->getById($id));
+		return $this->orderRecords($records, $id);
 	}
 
 	public function findByEntityName($name) {
@@ -289,6 +290,29 @@ class RecordService {
 		return $this->findById(array_unique($record_ids));
 	}
 
+	public function getRecordsBy(
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = NULL,
+		$offset = 0
+	) {
+		$this->setDefaultLimitIfNull($limit);
+		$values = $this->valueRepository->getRecordIds(
+			$orderBy,
+			$descending,
+			$limit,
+			$offset
+		);
+
+		$record_ids = array();
+
+		foreach ($values as $value_row) {
+			$record_ids[] = $value_row->getRecordId();
+		}
+
+		return $this->findById(array_unique($record_ids));
+	}
+
 	/**
 	 * Get records from IRecordRow[]
 	 *
@@ -321,6 +345,28 @@ class RecordService {
 
 		return $records;
 		
+	}
+
+	/**
+	 * Return records ordered by $order argument
+	 *
+	 * @param array $records IRecord[]
+	 * @param array int list of record_id
+	 * @return array ordered IRecord[]
+	 */
+	private function orderRecords(array $records, array $order) {
+		$records_map = $ordered = array();
+
+		foreach ($records as $pos => $record) {
+			$records_map[$record->getId()] = $pos;
+		}
+
+		foreach ($order as $id) {
+			$record_pos = $records_map[$id];
+			$ordered[] = $records[$record_pos];
+		}
+
+		return $ordered;
 	}
 
 	private function getEntity($getter, $val) {

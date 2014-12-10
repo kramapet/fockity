@@ -28,15 +28,35 @@ class RecordServiceTest extends DbTestCase {
 
 		$dibi = $this->createDibi();
 
-		$entityRepository = new EntityRepository(new EntityMapper($dibi), new EntityFactory());
-		$propertyRepository = new PropertyRepository(new PropertyMapper($dibi), new PropertyFactory());
+		$entityRepository = new EntityRepository(
+			new EntityMapper($dibi), 
+			new EntityFactory()
+		);
+
+		$propertyRepository = new PropertyRepository(
+			new PropertyMapper($dibi), 
+			new PropertyFactory()
+		);
 		
-		$entityService = new EntityService($entityRepository, $propertyRepository);
+		$entityService = new EntityService(
+			$entityRepository, $propertyRepository
+		);
 
-		$recordRepository = new RecordRepository(new RecordMapper($dibi), new RecordFactory());
-		$valueRepository = new ValueRepository(new ValueMapper($dibi), new ValueFactory());
+		$recordRepository = new RecordRepository(
+			new RecordMapper($dibi), 
+			new RecordFactory()
+		);
 
-		$this->service = new RecordService($recordRepository, $valueRepository, $entityService->findAll());
+		$valueRepository = new ValueRepository(
+			new ValueMapper($dibi), 
+			new ValueFactory()
+		);
+
+		$this->service = new RecordService(
+			$recordRepository, 
+			$valueRepository, 
+			$entityService->findAll()
+		);
 	}
 
 	protected function tearDown() {
@@ -123,6 +143,26 @@ class RecordServiceTest extends DbTestCase {
 		$this->assertCount(1, $records);
 	}
 
+	public function testToGetRecordOrderedBy() {
+		$this->createPage('Alpha', '...');
+		$this->createPage('Beta', '...');
+		$this->createPage('Gamma', '...');
+		$this->createPage('Psi', '...');
+		$this->createPage('Eta', '...');
+		$this->createPage('Zeta', '...');
+
+		// get records in ascending order by property id = 1 (entity page, property name)
+		$records = $this->service->getRecordsBy(1);
+		$expected = array('Alpha', 'Beta', 'Eta', 'Gamma', 'Psi', 'Zeta');
+
+		echo "\n";
+		foreach ($records as $record) {
+			$name = $record->getValue('name')->getValue();
+			$expected_name = array_shift($expected);  // first out
+			$this->assertEquals($expected_name, $name);
+		}
+	}
+
 	public function testToCreateRecord() {
 		$entity = 'page';
 		$data['name'] = 'Hello World';
@@ -142,5 +182,15 @@ class RecordServiceTest extends DbTestCase {
 
 	public function testToDeleteMultipleRecords() {
 		$this->assertEquals(2, $this->service->delete(array(1, 2)));
+	}
+
+	private function createPage($name, $content) {
+		$entity = 'page';
+		$data = array(
+			'name' => $name,
+			'content' => $content
+		);
+
+		$this->service->create($entity, $data);
 	}
 }
