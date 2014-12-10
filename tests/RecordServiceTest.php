@@ -155,13 +155,40 @@ class RecordServiceTest extends DbTestCase {
 		$records = $this->service->getRecordsBy(1);
 		$expected = array('Alpha', 'Beta', 'Eta', 'Gamma', 'Psi', 'Zeta');
 
-		echo "\n";
 		foreach ($records as $record) {
 			$name = $record->getValue('name')->getValue();
 			$expected_name = array_shift($expected);  // first out
 			$this->assertEquals($expected_name, $name);
 		}
 	}
+
+	public function testToPageRecords() {
+		$pages = range('a', 'z');
+		foreach ($pages as $n) {
+			$this->createPage($n, '...');
+		}
+
+
+		$limit = 2;
+		$offset = 0;
+
+		while ($offset < 5) {
+			$expected = array_slice($pages, $offset, $limit);
+			$records = $this->service->getRecordsBy(
+				1, // property id - page entity, property 'name'
+				FALSE, // ascending
+				$limit, 
+				$offset++
+			);
+
+			foreach ($records as $record) {
+				$expected_name = array_shift($expected); // first out	
+				$name = $record->getValue('name')->getValue();
+				$this->assertEquals($expected_name, $name);
+			}
+		}
+	}
+
 
 	public function testToCreateRecord() {
 		$entity = 'page';
