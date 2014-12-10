@@ -6,6 +6,8 @@ use Fockity\ValueMapper,
 
 class ValueRepositoryTest extends DbTestCase {
 
+	const VALUE_INSTANCE = 'Fockity\IValueRow';
+
 	/** @var RecordRepository */
 	protected $repository;
 
@@ -29,7 +31,9 @@ class ValueRepositoryTest extends DbTestCase {
 		$property_id = 3;
 		$value = 'blue socks';
 
-		$this->assertInstanceOf('Fockity\IValueRow', $this->repository->create($record_id, $property_id, $value));
+		$row = $this->repository->create($record_id, $property_id, $value);
+
+		$this->assertInstanceOf(self::VALUE_INSTANCE, $row);
 	}
 
 	public function testToUpdateValue() {
@@ -46,13 +50,14 @@ class ValueRepositoryTest extends DbTestCase {
 
 	public function testToGetAllByRecord() {
 		$record_id = 1;
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $this->repository->getByRecord($record_id));
+		$row = $this->repository->getByRecord($record_id);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $row);
 	}
 
 	public function testToGetRecordIdsEquals() {
 		$phrase = 'Insurance';
 		$values = $this->repository->getRecordIdsEquals($phrase);
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsEqualsIn() {
@@ -60,14 +65,43 @@ class ValueRepositoryTest extends DbTestCase {
 		$phrase = 'Insurance';
 
 		$values = $this->repository->getRecordIdsEqualsIn($property_id, $phrase);
-		$this->assertContainsOnlyInstancesof('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesof(self::VALUE_INSTANCE, $values);
+	}
+
+	public function testToGetRecordIds() {
+		$values = $this->repository->getRecordIds();
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
+	}
+
+	public function testToGetRecordIdsOrderByProperty() {
+		$property_id = 3;
+
+		$values[] = array(
+			// order by property_id = 3 in ascending order
+			'values' => $this->repository->getRecordIds($property_id),
+			'expected' => array(1, 2)
+		);
+
+		$values[] = array(
+			// order by property_id = 3 in DESCENDING order
+			'values' => $this->repository->getRecordIds($property_id, TRUE),
+			'expected' => array(2, 1)
+		);
+
+		foreach ($values as $assoc) {
+			foreach ($assoc['values'] as $row) {
+				// test record ids
+				$expected_id = array_shift($assoc['expected']);
+				$this->assertEquals($expected_id, $row->getRecordId());
+			}
+		}
 	}
 
 	public function testToGetRecordIdsStartsWith() {
 		$phrase = 'Ins';
 
 		$values = $this->repository->getRecordIdsStartsWith($phrase);
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsStartsWithIn() {
@@ -79,14 +113,14 @@ class ValueRepositoryTest extends DbTestCase {
 			$property_id
 		);
 
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsEndsWith() {
 		$phrase = 'Ins';
 
 		$values = $this->repository->getRecordIdsEndsWith($phrase);
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsEndsWithIn() {
@@ -98,21 +132,21 @@ class ValueRepositoryTest extends DbTestCase {
 			$property_id
 		);
 
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsContains() {
 		$phrase = 'sur';
 
 		$values = $this->repository->getRecordIdsContains($phrase);
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 
 	public function testToGetRecordIdsContainsIn() {
 		$property_id = 3;
 		$phrase = 'sur';
 		
-		$values = $this->repository->getRecordIdsContainsIn($property_id, $phrase);	
-		$this->assertContainsOnlyInstancesOf('Fockity\IValueRow', $values);
+		$values = $this->repository->getRecordIdsContainsIn($phrase, $property_id);	
+		$this->assertContainsOnlyInstancesOf(self::VALUE_INSTANCE, $values);
 	}
 }

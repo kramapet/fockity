@@ -32,6 +32,23 @@ class ValueRepository extends AbstractRepository {
 		return $this->instantiateFromResult($this->mapper->getByRecord($id), $this->factory);
 	}
 
+	public function getRecordIds(
+		$orderBy = NULL,
+		$descending = FALSE,
+		$limit = IValueMapper::DEFAULT_LIMIT,
+		$offset = IValueMapper::DEFAULT_OFFSET
+	) {
+		return $this->instantiateFromResult(
+			$this->mapper->getRecordIds(
+				$orderBy,
+				$descending,
+				$limit,
+				$offset
+			),
+			$this->factory
+		);
+	}
+
 	public function getRecordIdsEquals(
 		$phrase,
 		$orderBy = NULL,
