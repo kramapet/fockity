@@ -27,21 +27,6 @@ class ValueRepository extends AbstractRepository {
 		return $this->mapper->delete($id);
 	}
 
-	public function getEquals($phrase) {
-		return $this->instantiateFromResult($this->mapper->getEquals($phrase), $this->factory);
-	}
-
-	public function getEqualsIn($property_id, $phrase) {
-		return $this->instantiateFromResult($this->mapper->getEqualsIn($property_id, $phrase), $this->factory);
-	}
-
-	public function getLike($phrase) {
-		return $this->instantiateFromResult($this->mapper->getLike($phrase), $this->factory);
-	}
-
-	public function getLikeIn($property_id, $phrase) {
-		return $this->instantiateFromResult($this->mapper->getLikeIn($property_id, $phrase), $this->factory);
-	}
 
 	public function getByRecord($id) {
 		return $this->instantiateFromResult($this->mapper->getByRecord($id), $this->factory);

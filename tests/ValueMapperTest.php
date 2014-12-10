@@ -17,31 +17,6 @@ class ValueMapperTest extends DbTestCase {
 		$this->mapper = NULL;
 	}
 
-	public function testToGetValueEqualsIn() {
-		$phrase = 'Insurance';
-		$property_id = 3; // 'name' property in 'post' entity
-
-		$this->assertCount(1, $this->mapper->getEqualsIn($property_id, $phrase));
-	}
-
-	public function testToGetValueEquals() {
-		$phrase = 'Insurance';
-		$this->assertCount(1, $this->mapper->getEquals($phrase));
-	}
-
-	public function testToGetValueLike() {
-		$phrase = 'Insurance%';
-
-		$this->assertCount(3, $this->mapper->getLike($phrase));
-	}
-
-	public function testToGetValueLikeIn() {
-		$phrase = '%om%';
-		$property_id = 5; // 'name' property in 'post' entity
-
-		$this->assertCount(2, $this->mapper->getLikeIn($property_id, $phrase));
-	}
-
 	public function testToGetValueByRecords() {
 		$record_id = array(1, 2);
 		$this->assertInstanceOf(

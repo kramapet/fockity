@@ -39,7 +39,11 @@ class RecordService {
 				continue;
 			}
 
-			$values[] = $this->valueRepository->create($record->getId(), $property->getId(), $data[$property->getName()]);
+			$values[] = $this->valueRepository->create(
+				$record->getId(), 
+				$property->getId(), 
+				$data[$property->getName()]
+			);
 		}
 
 		return $this->instantiateRecord($record, $properties, $values);
@@ -116,28 +120,7 @@ class RecordService {
 		$record_ids = array();
 		$property_ids = $this->getPropertyIds((array) $property);
 
-		foreach ($this->valueRepository->getEqualsIn($property_ids, $phrase) as $value_row) {
-			$record_ids[] = $value_row->getRecordId();
-		}
-
-		return $this->findById(array_unique($record_ids));
-	}
-
-	public function findByValueLike($phrase) {
-		$record_ids = array();
-
-		foreach ($this->valueRepository->getLike($phrase) as $value_row) {
-			$record_ids[] = $value_row->getRecordId();
-		}
-
-		return $this->findById(array_unique($record_ids));
-	}
-
-	public function findByValueLikeIn($property, $phrase) {
-		$property_ids = $this->getPropertyIds((array) $property);
-		$record_ids = array();
-
-		foreach ($this->valueRepository->getLikeIn($property_ids, $phrase) as $value_row) {
+		foreach ($this->valueRepository->getRecordIdsEqualsIn($phrase, $property_ids) as $value_row) {
 			$record_ids[] = $value_row->getRecordId();
 		}
 
@@ -313,7 +296,10 @@ class RecordService {
 	 * @return array Record[]
 	 */
 	private function getRecords($rows) {
-		$records = $record_rows = $values_rows = $record_entity = array();
+		$records = // return value Record[]
+		$record_rows = // [(int) record id] => IRecordRow 
+		$values_rows = // [(int) record id] => IValueRow[]
+		$record_entity = array(); // [(int) record id] => IEntity
 
 		foreach ($rows as $record_row) {
 			$record_rows[$record_row->getId()] = $record_row;
@@ -326,7 +312,11 @@ class RecordService {
 
 		foreach ($values_rows as $record_id => $values) {
 			$properties = $record_entity[$record_id]->getProperties();
-			$records[] = $this->instantiateRecord($record_rows[$record_id], $properties, $values);
+			$records[] = $this->instantiateRecord(
+				$record_rows[$record_id], 
+				$properties, 
+				$values
+			);
 		}
 
 		return $records;
