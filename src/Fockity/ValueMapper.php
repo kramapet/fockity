@@ -13,8 +13,8 @@ class ValueMapper extends AbstractMapper implements IValueMapper {
 		}
 
 		return $this->dibi->query('SELECT * 
-			FROM [value] 
-			WHERE [record_id] IN %in', $id);
+			FROM %n', $this->table,  
+			'WHERE [record_id] IN %in', $id);
 	}
 
 	public function getRecordIdsEquals(
