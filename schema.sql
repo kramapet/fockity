@@ -39,3 +39,15 @@ create table `value` (
 	-- foreign key (`record_id`) references `record` (`id`),
 	primary key (`id`)
 )engine=innodb;
+
+drop table if exists `link`;
+create table `link` (
+	`id` int(10) not null auto_increment,
+	`value_id` int(10) not null,
+	`left` int(10) not null,
+	`right` int(10) not null,
+	-- foreign key (`value_id`) references `value` (`id`),
+	key `link_left` (`left`),
+	key `link_right` (`right`),
+	primary key (`id`)
+)engine=innodb;
